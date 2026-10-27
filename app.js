@@ -5,13 +5,13 @@ const dialog = document.querySelector("#feedback-dialog");
 const toastEl = document.querySelector("#toast");
 const XLSX_URL = "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js";
 
-// Face shapes for the 0–4 mood scale (eye radii + mouth curve), plus the dialog tint.
+// Face shapes for the 0–4 mood scale (eye radii + mouth curve). Low scores use the gold tone, high ones green.
 const FACES = [
-  { bg: "#fde4dc", fg: "#d9503a", eye: [15, 15], mouth: "M78 112 Q100 86 122 112" },
-  { bg: "#ebe6fc", fg: "#7b5ce5", eye: [22, 11], mouth: "M80 110 Q100 96 120 110" },
-  { bg: "#fbf0d3", fg: "#c08a1e", eye: [17, 17], mouth: "M80 106 Q100 106 120 106" },
-  { bg: "#d4eff0", fg: "#2b7a80", eye: [28, 22], mouth: "M84 102 Q100 114 116 102" },
-  { bg: "#d8efdb", fg: "#2f7a3f", eye: [30, 30], mouth: "M78 100 Q100 126 122 100" },
+  { tone: "gold", eye: [15, 15], mouth: "M78 112 Q100 86 122 112" },
+  { tone: "gold", eye: [22, 11], mouth: "M80 110 Q100 96 120 110" },
+  { tone: "gold", eye: [17, 17], mouth: "M80 106 Q100 106 120 106" },
+  { tone: "green", eye: [28, 22], mouth: "M84 102 Q100 114 116 102" },
+  { tone: "green", eye: [30, 30], mouth: "M78 100 Q100 126 122 100" },
 ];
 
 let state = store.load();
@@ -85,7 +85,7 @@ function phase(t, now = new Date()) {
 
 function faceSvg(level, cls = "") {
   const f = FACES[level];
-  return `<svg class="face ${cls}" viewBox="0 0 200 140" aria-hidden="true" style="--face-fg:${f.fg}">
+  return `<svg class="face ${cls}" viewBox="0 0 200 140" aria-hidden="true" style="--face-fg:var(--tone-${f.tone})">
     <ellipse class="eye" cx="62" cy="52" rx="${f.eye[0]}" ry="${f.eye[1]}"/>
     <ellipse class="eye" cx="138" cy="52" rx="${f.eye[0]}" ry="${f.eye[1]}"/>
     <path class="mouth" d="${f.mouth}"/>
@@ -94,7 +94,7 @@ function faceSvg(level, cls = "") {
 
 function setFace(svg, level) {
   const f = FACES[level];
-  svg.style.setProperty("--face-fg", f.fg);
+  svg.style.setProperty("--face-fg", `var(--tone-${f.tone})`);
   svg.querySelectorAll(".eye").forEach((eye) => {
     eye.setAttribute("rx", f.eye[0]);
     eye.setAttribute("ry", f.eye[1]);
@@ -256,8 +256,8 @@ function openFeedback(trainingId) {
 
   const form = dialog.querySelector("form");
   const applyMood = (level) => {
-    dialog.style.setProperty("--mood-bg", FACES[level].bg);
-    dialog.style.setProperty("--mood-fg", FACES[level].fg);
+    dialog.style.setProperty("--mood-bg", `var(--tone-${FACES[level].tone}-bg)`);
+    dialog.style.setProperty("--mood-fg", `var(--tone-${FACES[level].tone})`);
     setFace(dialog.querySelector(".face-lg"), level);
     dialog.querySelector("#mood-label").textContent = moodQ.labels[level];
   };
@@ -354,7 +354,7 @@ function rosterRow(user, rec, t, p) {
   let chip;
   if (rec && (rec.out || p === "ended")) chip = `<span class="chip">Jelen · ${time(rec.in)}–${time(rec.out || t.end)}</span>`;
   else if (rec) chip = `<span class="chip chip-live">Bent · ${time(rec.in)} óta</span>`;
-  else if (p === "ended") chip = `<span class="chip chip-red">Hiányzott</span>`;
+  else if (p === "ended") chip = `<span class="chip chip-gold">Hiányzott</span>`;
   else if (p === "upcoming") chip = `<span class="chip chip-muted">–</span>`;
   else chip = `<span class="chip chip-muted">Még nem lépett be</span>`;
   return `<li><span>${esc(user.name)}</span>${chip}</li>`;
