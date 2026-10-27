@@ -42,14 +42,12 @@ A demó edzései az aktuális időponthoz igazodnak (van épp zajló, nemrég v�
 - `index.html`, `styles.css`, `script.js`: bejelentkezés
 - `app.html`, `app.css`, `app.js`: portál (játékos / edző / admin nézet)
 - `data.js`: demó adatok és tárolás
+- `theme.js`: világos / sötét mód
 - `public/assets/`: címer és betűtípusok
 
-## Betűtípusok
+## Arculat
 
-A `public/assets/fonts/` mappába kell tenni:
-
-- `futura-display-xbd.otf`
-- `futura-display-bold.otf`
-- `futura-pt-book.otf`
-
-Amíg nincsenek ott, a felület tartalék betűtípust használ.
+- Színek: csak az ETO három színe (zöld `#176131`, arany `#b8994d`, krém `#f9f5ef`), illetve ezek árnyalatai és semleges szürkék.
+  A színek tokenként a `styles.css` elején vannak.
+- Világos és sötét mód: alapból a rendszer beállítását követi, a nap/hold gombbal (bejelentkezés jobb felső sarok, portál fejléc) át lehet váltani; a választást a böngésző megjegyzi.
+- Betűtípusok: `public/assets/fonts/` (FuturaDisplay 800/700, FuturaPT 400).
