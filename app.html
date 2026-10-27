@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#176131" />
+    <title>ETO Játékosportál</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body class="app-body">
+    <header class="topbar">
+      <a class="topbar-brand" href="app.html">
+        <img src="public/assets/eto-badge.svg" alt="ETO címer" />
+        <span>JÁTÉKOSPORTÁL</span>
+      </a>
+      <div class="topbar-user">
+        <div class="topbar-who">
+          <strong id="user-name"></strong>
+          <span id="user-role" class="role-chip"></span>
+        </div>
+        <button class="ghost-button" id="logout" type="button">Kijelentkezés</button>
+      </div>
+    </header>
+    <main class="app-main" id="app"></main>
+    <dialog class="feedback-dialog" id="feedback-dialog"></dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
